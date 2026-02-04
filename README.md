@@ -2,7 +2,7 @@
   <img src=".github/hommr.png" alt="Hommr Logo" width="100">
   <br>
 
-  [![Modrinth](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/available/modrinth_vector.svg)](https://modrinth.com/plugin/niveriaapi)
+  [![Modrinth](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/available/modrinth_vector.svg)](https://modrinth.com/plugin/hommr)
   ![Unsupported spigot](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/unsupported/spigot_vector.svg)
   <br>
   [![CodeFactor](https://www.codefactor.io/repository/github/axenodev/hommr/badge?style=for-the-badge)](https://www.codefactor.io/repository/github/axenodev/hommr)
