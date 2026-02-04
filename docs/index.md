@@ -4,22 +4,23 @@ layout: home
 
 hero:
   name: "Hommr"
-  text: "Easily set, teleport, and manage your homes."
-  tagline: My great project tagline
+  text: "Home Management Simplified"
+  tagline: "A lightweight, developer-friendly home management plugin for Minecraft servers."
+  image: /logo.png
   actions:
     - theme: brand
-      text: Markdown Examples
-      link: /markdown-examples
-    - theme: alt
-      text: API Examples
-      link: /api-examples
+      text: Get Started
+      link: /api
+    - theme: outline
+      text: View on GitHub
+      link: https://github.com/AxenoDev/Hommr
 
 features:
-  - title: Feature A
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature B
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature C
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+  - title: Simple Commands
+    details: Intuitive commands like /sethome, /home, and /homes make navigation a breeze for your players.
+  - title: Developer API
+    details: Built with developers in mind. Easily integrate Hommr into your own plugins using our robust API.
+  - title: Custom Events
+    details: Listen to HomeSetEvent, HomeTeleportEvent, and HomeDeleteEvent to create custom behaviors.
 ---
 

@@ -4,6 +4,13 @@ import {defineConfig} from 'vitepress'
 export default defineConfig({
     title: "Hommr",
     description: "Easily set, teleport, and manage your homes.",
+    lang: 'en-US',
+    sitemap: {
+        hostname: 'https://hommr.axeno.me',
+    },
+    head: [
+        ['link', {rel: 'icon', href: '/favicon.ico'}]
+    ],
     markdown: {
         theme: {
             light: "catppuccin-latte",
@@ -12,6 +19,7 @@ export default defineConfig({
     },
     themeConfig: {
         // https://vitepress.dev/reference/default-theme-config
+        logo: '/hommr.png',
         nav: [
             {text: 'Home', link: '/'},
             {text: 'API', link: '/api'},
@@ -29,7 +37,14 @@ export default defineConfig({
         ],
 
         socialLinks: [
-            {icon: 'github', link: 'https://github.com/vuejs/vitepress'}
-        ]
+            {icon: 'github', link: 'https://github.com/AxenoDev/Hommr'}
+        ],
+        search: {
+            provider: 'local'
+        },
+        footer: {
+            message: 'Released under the GNU GPLv3 License.',
+            copyright: 'Copyright © 2026 <a href="https://axeno.me/">AxenoDev</a>'
+        }
     }
 })
