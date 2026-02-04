@@ -1,18 +1,21 @@
 changelog:
   categories:
-    - title: "Nouvelles fonctionnalités"
+    - title: "Minecraft Versions"
+      labels:
+        - "🧱 Minecraft Version"
+    - title: "New Features"
       labels:
         - "📦 Features"
-        - "➕ Ajout"
-    - title: "Améliorations & Corrections"
+        - "➕ Improvement"
+    - title: "Updates & Changes"
       labels:
-        - "🆙 Amélioration"
-        - "🔧️ Changement"
-    - title: "Bugs & Optimisations"
+        - "🆙 Update"
+        - "🔧️ Change"
+    - title: "Bugs & Fixes"
       labels:
         - "🪲 Bug Report"
         - "✨ Fixes"
-        - "⚡ Optimisation"
+        - "⚡ Performance"
     - title: "Autres"
       labels:
         - "*"
