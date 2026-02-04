@@ -33,3 +33,4 @@ replay_pid*
 .gradle/
 
 server/
+node_modules/
