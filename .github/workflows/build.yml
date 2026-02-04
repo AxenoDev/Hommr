@@ -38,7 +38,10 @@ jobs:
         env:
           SNAPSHOT: true
           GITHUB_SHA: ${{ github.sha }}
-        run: ./gradlew build
+        run: |
+          ./gradlew build
+          mkdir -p builds
+          cp build/libs/*.jar builds/
 
       - name: Upload jar
         uses: actions/upload-artifact@v4
