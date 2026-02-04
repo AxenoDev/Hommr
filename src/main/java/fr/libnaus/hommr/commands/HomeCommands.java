@@ -14,7 +14,7 @@ import java.util.Set;
 public class HomeCommands {
 
     public static final Component PREFIX = MiniMessage.miniMessage()
-            .deserialize("<gradient:aqua:blue>ʜᴏᴍᴍʀ</gradient> <dark_gray>»</dark_gray> ");
+            .deserialize("<gradient:#7695FF:#FFFFFF>ʜᴏᴍᴍʀ</gradient> <dark_gray>»</dark_gray> ");
 
     public static void msg(Player player, Component message) {
         player.sendMessage(PREFIX.append(message));
