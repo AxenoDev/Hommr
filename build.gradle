@@ -19,7 +19,7 @@ def tag = System.getenv("TAG") ?: getLatestGitTag()
 def isSnapshot = System.getenv('SNAPSHOT')?.toBoolean() ?: false
 def gitHash = System.getenv("GIT_HASH") ?: "local"
 
-group = 'fr.libnaus.hommr'
+group = 'me.axeno'
 version = isSnapshot ? "${tag}-${gitHash.take(7)}" : (System.getenv("TAG") ? tag : "$tag-local")
 
 repositories {
@@ -80,6 +80,34 @@ publishing {
     publications {
         maven(MavenPublication) {
             from components.java
+            artifactId = 'hommr'
+
+            pom {
+                name = 'Hommr'
+                description = 'Easily set, teleport, and manage your homes.'
+                url = 'https://github.com/AxenoDev/Hommr'
+
+                licenses {
+                    license {
+                        name = 'GNU General Public License v3.0'
+                        url = 'https://opensource.org/licenses/GPL-3.0'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id = 'AxenoDev'
+                        name = 'AxenoDev'
+                        url = 'https://axeno.me'
+                    }
+                }
+
+                scm {
+                    connection = 'scm:git:git://github.com/AxenoDev/Hommr.git'
+                    developerConnection = 'scm:git:ssh://github.com:AxenoDev/Hommr.git'
+                    url = 'https://github.com/AxenoDev/Hommr'
+                }
+            }
         }
     }
     repositories {
