@@ -11,7 +11,8 @@ import java.util.UUID;
 /**
  * Public API of Hommr
  * <p>
- * * Example of usage:
+ * Example of usage:
+ * </p>
  * <pre>
  *     {@code
  *     HommrApi hommrApi = ...; // Get the API instance
@@ -20,8 +21,7 @@ import java.util.UUID;
  *     Location location = ...; // Location to set the home
  *     boolean success = hommrApi.setHome(playerId, homeName, location);
  *     }
- *     </pre>
- * </p>
+ * </pre>
  */
 public interface HommrApi {
 
