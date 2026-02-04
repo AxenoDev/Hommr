@@ -3,6 +3,7 @@ plugins {
     id 'maven-publish'
     id("xyz.jpenilla.run-paper") version "2.3.1"
     id("com.gradleup.shadow") version "9.1.0"
+    id("com.modrinth.minotaur") version "2.8.7"
 }
 
 def getLatestGitTag() {
@@ -74,6 +75,17 @@ processResources {
     filesMatching('paper-plugin.yml') {
         expand props
     }
+}
+
+modrinth {
+    token = System.getenv("MODRINTH_TOKEN")
+    projectId = "hommr"
+    versionNumber = version
+    versionName = "Hommr ${version}"
+    uploadFile = tasks.shadowJar
+    gameVersions = ["${minecraft_version}"]
+    loaders = ["paper", "spigot", "purpur"]
+    syncBodyFrom = file("README.md").text
 }
 
 publishing {

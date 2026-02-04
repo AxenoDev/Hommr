@@ -49,9 +49,10 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
 
-      - name: Publish package
-        run: ./gradlew publish
+      - name: Publish package & Modrinth
+        run: ./gradlew publish modrinth
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_ACTOR: ${{ github.actor }}
           TAG: ${{ github.event.release.tag_name }}
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
