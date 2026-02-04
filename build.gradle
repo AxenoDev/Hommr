@@ -84,7 +84,7 @@ modrinth {
     versionName = "Hommr ${version}"
     uploadFile = tasks.shadowJar
     gameVersions = ["${minecraft_version}"]
-    loaders = ["paper", "spigot", "purpur"]
+    loaders = ["paper", "purpur"]
     syncBodyFrom = file("README.md").text
 }
 
