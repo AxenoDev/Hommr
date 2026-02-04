@@ -28,9 +28,10 @@ jobs:
 
       - name: Build with Gradle
         run: |
-          VERSION=$(echo ${{ github.event.milestone.title }})
+          VERSION="${{ github.event.milestone.title }}"
           ./gradlew shadowJar
-          cp ./builds/Hommr.jar ./builds/Hommr-$VERSION.jar
+          mkdir -p builds
+          cp build/libs/*-all.jar "builds/Hommr-$VERSION.jar"
         env:
           TAG: ${{ github.event.milestone.title }}
 
@@ -54,7 +55,6 @@ jobs:
             ## Changements
             ${{ github.event.milestone.description }}
           files: |
-            build/devlibs/Hommr-*-dev.jar 
             builds/**
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
