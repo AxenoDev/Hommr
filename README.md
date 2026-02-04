@@ -1,15 +1,16 @@
 <div align="center">
-  <img src=".github/hommr.png" alt="Hommr Logo" width="100">
+  <img src="https://github.com/AxenoDev/Hommr/blob/master/.github/hommr.png?raw=true" alt="Hommr Logo" width="200">
   <br>
 
-  [![Modrinth](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/available/modrinth_vector.svg)](https://modrinth.com/plugin/hommr)
-  ![Unsupported spigot](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/unsupported/spigot_vector.svg)
-  <br>
-  [![CodeFactor](https://www.codefactor.io/repository/github/axenodev/hommr/badge?style=for-the-badge)](https://www.codefactor.io/repository/github/axenodev/hommr)
-  ![Version](https://img.shields.io/github/v/release/AxenoDev/Hommr?style=for-the-badge)
+[![Modrinth](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/available/modrinth_vector.svg)](https://modrinth.com/plugin/hommr)
+![Unsupported spigot](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/unsupported/spigot_vector.svg)
+<br>
+[![CodeFactor](https://www.codefactor.io/repository/github/axenodev/hommr/badge?style=for-the-badge)](https://www.codefactor.io/repository/github/axenodev/hommr)
+![Version](https://img.shields.io/github/v/release/AxenoDev/Hommr?style=for-the-badge)
 </div>
 
-**Hommr** is a simple, lightweight, and modern home management plugin for Minecraft servers running Paper. It allows players to set, delete, and teleport to multiple homes with ease.
+**Hommr** is a simple, lightweight, and modern home management plugin for Minecraft servers running Paper. It allows
+players to set, delete, and teleport to multiple homes with ease.
 
 ## ✨ Features
 
@@ -28,21 +29,23 @@
 
 ## 🎮 Commands & Permissions
 
-| Command | Description | Permission |
-|---------|-------------|------------|
-| `/home [name]` | Teleport to a specific home (or list if none specified). | `hommr.home.list` (for listing) |
-| `/sethome <name>` | Set a new home at your current location. | `hommr.home.set` |
-| `/delhome <name>` | Delete an existing home. | `hommr.home.delete` |
-| `/home list` | List all your saved homes. | `hommr.home.list` |
-| `/home help` | Show the help menu. | - |
+| Command           | Description                                              | Permission                      |
+|-------------------|----------------------------------------------------------|---------------------------------|
+| `/home [name]`    | Teleport to a specific home (or list if none specified). | `hommr.home.list` (for listing) |
+| `/sethome <name>` | Set a new home at your current location.                 | `hommr.home.set`                |
+| `/delhome <name>` | Delete an existing home.                                 | `hommr.home.delete`             |
+| `/home list`      | List all your saved homes.                               | `hommr.home.list`               |
+| `/home help`      | Show the help menu.                                      | -                               |
 
 ## ⚙️ Configuration
 
-The `config.yml` file is automatically generated when you first run the plugin. Currently, it is minimal, but more options will be added in future updates.
+The `config.yml` file is automatically generated when you first run the plugin. Currently, it is minimal, but more
+options will be added in future updates.
 
 ## 👨‍💻 Developer API
 
-Hommr provides an API for developers to interact with the plugin. You can listen to events such as `HomeSetEvent`, `HomeDeleteEvent`, and `HomeTeleportEvent`.
+Hommr provides an API for developers to interact with the plugin. You can listen to events such as `HomeSetEvent`,
+`HomeDeleteEvent`, and `HomeTeleportEvent`.
 
 ### Maven Dependency
 
@@ -50,18 +53,11 @@ To use the API, add the following to your `build.gradle`:
 
 ```groovy
 repositories {
-    maven {
-        name = "GitHubPackages"
-        url = uri("https://maven.pkg.github.com/AxenoDev/Hommr")
-        credentials {
-            username = System.getenv("GITHUB_ACTOR")
-            password = System.getenv("GITHUB_TOKEN")
-        }
-    }
+    maven { url = uri("https://jitpack.io") }
 }
 
 dependencies {
-    compileOnly "me.axeno:hommr:VERSION"
+    compileOnly "com.github.AxenoDev:Hommr:VERSION"
 }
 ```
 
