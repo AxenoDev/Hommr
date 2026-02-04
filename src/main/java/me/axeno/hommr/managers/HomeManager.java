@@ -1,10 +1,10 @@
-package fr.libnaus.hommr.managers;
+package me.axeno.hommr.managers;
 
-import fr.libnaus.hommr.events.HomeDeleteEvent;
-import fr.libnaus.hommr.events.HomeSetEvent;
-import fr.libnaus.hommr.events.HomeTeleportEvent;
-import fr.libnaus.hommr.models.Home;
-import fr.libnaus.hommr.models.PlayerHomes;
+import me.axeno.hommr.events.HomeDeleteEvent;
+import me.axeno.hommr.events.HomeSetEvent;
+import me.axeno.hommr.events.HomeTeleportEvent;
+import me.axeno.hommr.models.Home;
+import me.axeno.hommr.models.PlayerHomes;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

@@ -1,6 +1,6 @@
 name: Hommr
 version: ${version}
-main: fr.libnaus.hommr.Hommr
+main: me.axeno.hommr.Hommr
 api-version: ${minecraft_version}
 prefix: Hommr
 load: STARTUP

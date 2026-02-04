@@ -1,6 +1,6 @@
-package fr.libnaus.hommr.events;
+package me.axeno.hommr.events;
 
-import fr.libnaus.hommr.models.Home;
+import me.axeno.hommr.models.Home;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.entity.Player;

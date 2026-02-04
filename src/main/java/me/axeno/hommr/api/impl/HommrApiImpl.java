@@ -1,8 +1,8 @@
-package fr.libnaus.hommr.api.impl;
+package me.axeno.hommr.api.impl;
 
-import fr.libnaus.hommr.api.HommrApi;
-import fr.libnaus.hommr.managers.HomeManager;
-import fr.libnaus.hommr.models.Home;
+import me.axeno.hommr.api.HommrApi;
+import me.axeno.hommr.managers.HomeManager;
+import me.axeno.hommr.models.Home;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

@@ -1,6 +1,6 @@
-package fr.libnaus.hommr.listeners;
+package me.axeno.hommr.listeners;
 
-import fr.libnaus.hommr.managers.HomeManager;
+import me.axeno.hommr.managers.HomeManager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;

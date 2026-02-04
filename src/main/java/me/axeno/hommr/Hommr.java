@@ -1,11 +1,10 @@
-package fr.libnaus.hommr;
+package me.axeno.hommr;
 
-import fr.libnaus.hommr.api.HommrApi;
-import fr.libnaus.hommr.api.impl.HommrApiImpl;
-import fr.libnaus.hommr.commands.AdminCommands;
-import fr.libnaus.hommr.commands.HomeCommands;
-import fr.libnaus.hommr.listeners.PlayerListener;
-import fr.libnaus.hommr.managers.HomeManager;
+import me.axeno.hommr.api.HommrApi;
+import me.axeno.hommr.api.impl.HommrApiImpl;
+import me.axeno.hommr.commands.HomeCommands;
+import me.axeno.hommr.listeners.PlayerListener;
+import me.axeno.hommr.managers.HomeManager;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.ServicePriority;
@@ -41,7 +40,6 @@ public final class Hommr extends JavaPlugin {
         this.lamp = BukkitLamp.builder(this).build();
 
         lamp.register(new HomeCommands());
-        lamp.register(new AdminCommands());
 
         Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
 

@@ -1,6 +1,6 @@
-package fr.libnaus.hommr.api;
+package me.axeno.hommr.api;
 
-import fr.libnaus.hommr.models.Home;
+import me.axeno.hommr.models.Home;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 

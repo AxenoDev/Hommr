@@ -1,6 +1,6 @@
-package fr.libnaus.hommr.commands;
+package me.axeno.hommr.commands;
 
-import fr.libnaus.hommr.managers.HomeManager;
+import me.axeno.hommr.managers.HomeManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;

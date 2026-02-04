@@ -1,4 +1,4 @@
-package fr.libnaus.hommr.models;
+package me.axeno.hommr.models;
 
 import lombok.Getter;
 
