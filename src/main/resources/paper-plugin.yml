@@ -4,6 +4,6 @@ main: fr.libnaus.hommr.Hommr
 api-version: ${minecraft_version}
 prefix: Hommr
 load: STARTUP
-authors: [ Libnaus Studio ]
+authors: [ AxenoDev ]
 description: Easily set, teleport, and manage your homes.
-website: https://libnaus.fr/
+website: https://axeno.me

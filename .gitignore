@@ -31,3 +31,5 @@ replay_pid*
 
 # Gradle
 .gradle/
+
+server/
