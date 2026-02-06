@@ -60,11 +60,7 @@ public class DatabaseManager {
 
             homeDao = DaoManager.createDao(connectionSource, Home.class);
 
-            try {
-                TableUtils.createTableIfNotExists(connectionSource, Home.class);
-            } catch (SQLException e) {
-                Hommr.getInstance().getLogger().log(java.util.logging.Level.SEVERE, "Failed to ensure database table", e);
-            }
+            TableUtils.createTableIfNotExists(connectionSource, Home.class);
 
         } catch (SQLException e) {
             Hommr.getInstance().getLogger().log(java.util.logging.Level.SEVERE, "Failed to initialize database", e);
