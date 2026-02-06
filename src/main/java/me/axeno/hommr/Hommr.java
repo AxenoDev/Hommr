@@ -1,11 +1,10 @@
 package me.axeno.hommr;
 
+import lombok.Getter;
 import me.axeno.hommr.api.HommrApi;
 import me.axeno.hommr.api.impl.HommrApiImpl;
 import me.axeno.hommr.commands.HomeCommands;
-import me.axeno.hommr.listeners.PlayerListener;
 import me.axeno.hommr.managers.HomeManager;
-import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -25,6 +24,11 @@ public final class Hommr extends JavaPlugin {
     @Getter
     private Lamp<BukkitCommandActor> lamp;
 
+    /**
+     * Initializes the plugin on enable: sets the singleton instance, ensures default configuration,
+     * starts the HomeManager, creates and registers the Hommr API service, builds the command lamp,
+     * registers plugin commands, and emits the startup log banner.
+     */
     @Override
     public void onEnable() {
         instance = this;
@@ -41,19 +45,30 @@ public final class Hommr extends JavaPlugin {
 
         lamp.register(new HomeCommands());
 
-        Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
-
         this.logLoadMessage();
     }
 
+    /**
+     * Perform plugin shutdown tasks when the plugin is disabled.
+     *
+     * <p>Shuts down the HomeManager and logs a disable message to the SLF4J logger.</p>
+     */
     @Override
     public void onDisable() {
+        HomeManager.shutdown();
         this.getSLF4JLogger().info("Hommr Disabled");
     }
 
+    /**
+     * Logs a stylized startup banner containing plugin, Java, and server information.
+     *
+     * <p>Emits a multi-line ASCII banner to the plugin logger that includes the plugin
+     * version, the running Java version, and the server name/version.</p>
+     */
     private void logLoadMessage() {
         Logger logger = this.getSLF4JLogger();
 
+        @SuppressWarnings("UnstableApiUsage")
         String pluginVersion = this.getPluginMeta().getVersion();
         String javaVersion = System.getProperty("java.version");
         String server = String.format("%s %s", Bukkit.getName(), Bukkit.getVersion());
@@ -66,4 +81,3 @@ public final class Hommr extends JavaPlugin {
         logger.info("\u001B[1;34m                                                    \u001B[0m");
     }
 }
-

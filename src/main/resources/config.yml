@@ -1,1 +1,16 @@
 # Hommr Configuration
+
+database:
+  # Database type to use for storage.
+  # Available options:
+  # - sqlite: Stores data in a local file (homes.db) within the plugin folder. No extra setup required.
+  # - mysql: Stores data in an external MySQL database. Requires connection details below.
+  type: sqlite
+
+  connection:
+    # JDBC URL for the database connection (Required for MySQL).
+    # Format for MySQL: jdbc:mysql://<host>:<port>/<database>
+    # Example: jdbc:mysql://localhost:3306/hommr
+    url: jdbc:mysql://localhost:3306/hommr
+    username: ""
+    password: ""
