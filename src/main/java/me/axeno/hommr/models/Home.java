@@ -47,6 +47,14 @@ public class Home {
     @DatabaseField(canBeNull = false)
     private long createdAt;
 
+    /**
+     * Create a Home instance from a Bukkit Location for the given owner and name.
+     *
+     * @param owner    the UUID of the player who owns the home
+     * @param name     the display name for the home
+     * @param location the source Bukkit Location whose world, coordinates, yaw, and pitch are used
+     * @return a Home populated with the location data, owner and name; `id` is set to 0 and `createdAt` is set to the current system time in milliseconds
+     */
     public static Home fromLocation(UUID owner, String name, Location location) {
         return new Home(
                 0,

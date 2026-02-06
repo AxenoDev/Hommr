@@ -20,6 +20,15 @@ public class DatabaseManager {
     @Getter
     private Dao<Home, Integer> homeDao;
 
+    /**
+     * Set up the database connection and DAO for Home entities based on configuration.
+     *
+     * Initializes the plugin data folder if necessary, creates a JDBC connection source
+     * (MySQL when `database.type` is `"mysql"`, otherwise SQLite using a `homes.db` file),
+     * and creates a Dao<Home, Integer> for accessing Home records. Ensures the Home table
+     * exists in the database; failures during folder creation, table creation, or overall
+     * initialization are logged.
+     */
     public void init() {
         try {
             File dataFolder = Hommr.getInstance().getDataFolder();
@@ -58,6 +67,11 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Closes the underlying database connection source and releases related resources.
+     *
+     * If an error occurs while closing, the exception is caught and a warning is logged. 
+     */
     public void close() {
         if (connectionSource != null) {
             try {
@@ -68,10 +82,24 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Retrieve all Home records from the database.
+     *
+     * @return a list of all Home objects
+     * @throws SQLException if a database access error occurs while querying for homes
+     */
     public List<Home> getAllHomes() throws SQLException {
         return homeDao.queryForAll();
     }
 
+    /**
+     * Replaces all stored Home records with the provided list.
+     *
+     * Clears the Home table and inserts the given homes in a single batch operation.
+     *
+     * @param homes the list of Home objects to persist (may be empty)
+     * @throws SQLException if an error occurs while clearing the table or saving records
+     */
     public void saveAllHomes(List<Home> homes) throws SQLException {
         TableUtils.clearTable(connectionSource, Home.class);
         try {

@@ -24,6 +24,11 @@ public final class Hommr extends JavaPlugin {
     @Getter
     private Lamp<BukkitCommandActor> lamp;
 
+    /**
+     * Initializes the plugin on enable: sets the singleton instance, ensures default configuration,
+     * starts the HomeManager, creates and registers the Hommr API service, builds the command lamp,
+     * registers plugin commands, and emits the startup log banner.
+     */
     @Override
     public void onEnable() {
         instance = this;
@@ -43,12 +48,23 @@ public final class Hommr extends JavaPlugin {
         this.logLoadMessage();
     }
 
+    /**
+     * Perform plugin shutdown tasks when the plugin is disabled.
+     *
+     * <p>Shuts down the HomeManager and logs a disable message to the SLF4J logger.</p>
+     */
     @Override
     public void onDisable() {
         HomeManager.shutdown();
         this.getSLF4JLogger().info("Hommr Disabled");
     }
 
+    /**
+     * Logs a stylized startup banner containing plugin, Java, and server information.
+     *
+     * <p>Emits a multi-line ASCII banner to the plugin logger that includes the plugin
+     * version, the running Java version, and the server name/version.</p>
+     */
     private void logLoadMessage() {
         Logger logger = this.getSLF4JLogger();
 
