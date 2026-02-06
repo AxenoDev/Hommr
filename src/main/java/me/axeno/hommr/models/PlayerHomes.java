@@ -10,11 +10,24 @@ public class PlayerHomes {
     private final UUID playerId;
     private final Map<String, Home> homes;
 
+    /**
+     * Creates a PlayerHomes instance for the specified player.
+     *
+     * Initializes the object and prepares an empty, thread-safe map for storing the player's named homes.
+     *
+     * @param playerId UUID identifying the player whose homes will be managed
+     */
     public PlayerHomes(UUID playerId) {
         this.playerId = playerId;
         this.homes = new ConcurrentHashMap<>();
     }
 
+    /**
+     * Stores a Home under the given name for this player, using the lowercase form of the name.
+     *
+     * @param name the home name; its lowercase form is used as the storage key
+     * @param home the Home instance to store; replaces any existing home with the same lowercase name
+     */
     public void setHome(String name, Home home) {
         homes.put(name.toLowerCase(), home);
     }
