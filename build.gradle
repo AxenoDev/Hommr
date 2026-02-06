@@ -53,6 +53,8 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.10.1")
     testImplementation("org.mockito:mockito-core:5.8.0")
     testImplementation("org.mockito:mockito-junit-jupiter:5.8.0")
+    testImplementation("io.papermc.paper:paper-api:${minecraft_version}-R0.1-SNAPSHOT")
+
     testImplementation("com.j256.ormlite:ormlite-jdbc:${ormlite_version}")
     testImplementation("org.xerial:sqlite-jdbc:${sqlite_jdbc_version}")
 
