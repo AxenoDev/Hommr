@@ -3,6 +3,7 @@ package me.axeno.hommr.managers;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
+import com.j256.ormlite.misc.TransactionManager;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import lombok.Getter;
@@ -48,6 +49,9 @@ public class DatabaseManager {
                 databaseUrl = Hommr.getInstance().getConfig().getString("database.connection.url");
                 username = Hommr.getInstance().getConfig().getString("database.connection.username");
                 password = Hommr.getInstance().getConfig().getString("database.connection.password");
+                if (databaseUrl == null || databaseUrl.isEmpty()) {
+                    throw new IllegalArgumentException("MySQL database URL is required but not configured. Please check your config.yml.");
+                }
                 connectionSource = new JdbcConnectionSource(databaseUrl, username, password);
             } else {
                 databaseUrl = "jdbc:sqlite:" + new File(dataFolder, "homes.db").getAbsolutePath();
@@ -64,6 +68,7 @@ public class DatabaseManager {
 
         } catch (SQLException e) {
             Hommr.getInstance().getLogger().log(java.util.logging.Level.SEVERE, "Failed to initialize database", e);
+            throw new RuntimeException("Database initialization failed", e);
         }
     }
 
@@ -76,6 +81,7 @@ public class DatabaseManager {
         if (connectionSource != null) {
             try {
                 connectionSource.close();
+                connectionSource = null;
             } catch (Exception e) {
                 Hommr.getInstance().getLogger().log(java.util.logging.Level.WARNING, "Error closing database connection", e);
             }
@@ -101,19 +107,12 @@ public class DatabaseManager {
      * @throws SQLException if an error occurs while clearing the table or saving records
      */
     public void saveAllHomes(List<Home> homes) throws SQLException {
-        TableUtils.clearTable(connectionSource, Home.class);
-        try {
-            homeDao.callBatchTasks((Callable<Void>) () -> {
-                for (Home home : homes) {
-                    homeDao.create(home);
-                }
-                return null;
-            });
-        } catch (Exception e) {
-            if (e instanceof SQLException) {
-                throw (SQLException) e;
+        TransactionManager.callInTransaction(connectionSource, () -> {
+            TableUtils.clearTable(connectionSource, Home.class);
+            for (Home home : homes) {
+                homeDao.create(home);
             }
-            throw new SQLException("Error saving all homes", e);
-        }
+            return null;
+        });
     }
 }

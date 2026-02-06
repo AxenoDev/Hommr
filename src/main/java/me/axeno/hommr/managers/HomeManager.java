@@ -18,7 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class HomeManager {
 
     @Getter
-    private static Map<UUID, PlayerHomes> playerHomesCache;
+    private static final Map<UUID, PlayerHomes> playerHomesCache = new ConcurrentHashMap<>();
     private static DatabaseManager databaseManager;
 
     /**
@@ -32,7 +32,7 @@ public class HomeManager {
             databaseManager.init();
         }
 
-        playerHomesCache = new ConcurrentHashMap<>();
+        playerHomesCache.clear();
 
         try {
             List<Home> homes = databaseManager.getAllHomes();
