@@ -39,7 +39,7 @@ jobs:
           SNAPSHOT: true
           GITHUB_SHA: ${{ github.sha }}
         run: |
-          ./gradlew build
+          ./gradlew build -x test
           mkdir -p builds
           cp build/libs/*.jar builds/
 
@@ -48,3 +48,24 @@ jobs:
         with:
           name: "Hommr-${{ github.sha }}"
           path: builds/
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Make gradlew executable
+        run: chmod +x gradlew
+
+      - name: Run tests
+        run: ./gradlew test
