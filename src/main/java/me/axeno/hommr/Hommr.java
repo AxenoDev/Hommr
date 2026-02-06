@@ -1,11 +1,10 @@
 package me.axeno.hommr;
 
+import lombok.Getter;
 import me.axeno.hommr.api.HommrApi;
 import me.axeno.hommr.api.impl.HommrApiImpl;
 import me.axeno.hommr.commands.HomeCommands;
-import me.axeno.hommr.listeners.PlayerListener;
 import me.axeno.hommr.managers.HomeManager;
-import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -41,19 +40,19 @@ public final class Hommr extends JavaPlugin {
 
         lamp.register(new HomeCommands());
 
-        Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
-
         this.logLoadMessage();
     }
 
     @Override
     public void onDisable() {
+        HomeManager.shutdown();
         this.getSLF4JLogger().info("Hommr Disabled");
     }
 
     private void logLoadMessage() {
         Logger logger = this.getSLF4JLogger();
 
+        @SuppressWarnings("UnstableApiUsage")
         String pluginVersion = this.getPluginMeta().getVersion();
         String javaVersion = System.getProperty("java.version");
         String server = String.format("%s %s", Bukkit.getName(), Bukkit.getVersion());
@@ -66,4 +65,3 @@ public final class Hommr extends JavaPlugin {
         logger.info("\u001B[1;34m                                                    \u001B[0m");
     }
 }
-

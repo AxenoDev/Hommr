@@ -3,6 +3,7 @@ package me.axeno.hommr.models;
 import lombok.Getter;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Getter
 public class PlayerHomes {
@@ -11,7 +12,7 @@ public class PlayerHomes {
 
     public PlayerHomes(UUID playerId) {
         this.playerId = playerId;
-        this.homes = new HashMap<>();
+        this.homes = new ConcurrentHashMap<>();
     }
 
     public void setHome(String name, Home home) {

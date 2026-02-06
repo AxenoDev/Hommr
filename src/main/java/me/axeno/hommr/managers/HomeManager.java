@@ -1,15 +1,17 @@
 package me.axeno.hommr.managers;
 
+import lombok.Getter;
+import me.axeno.hommr.Hommr;
 import me.axeno.hommr.events.HomeDeleteEvent;
 import me.axeno.hommr.events.HomeSetEvent;
 import me.axeno.hommr.events.HomeTeleportEvent;
 import me.axeno.hommr.models.Home;
 import me.axeno.hommr.models.PlayerHomes;
-import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -17,9 +19,42 @@ public class HomeManager {
 
     @Getter
     private static Map<UUID, PlayerHomes> playerHomesCache;
+    private static DatabaseManager databaseManager;
 
     public static void init() {
+        if (databaseManager == null) {
+            databaseManager = new DatabaseManager();
+            databaseManager.init();
+        }
+
         playerHomesCache = new ConcurrentHashMap<>();
+
+        try {
+            List<Home> homes = databaseManager.getAllHomes();
+            for (Home home : homes) {
+                PlayerHomes ph = playerHomesCache.computeIfAbsent(home.getOwner(), PlayerHomes::new);
+                ph.setHome(home.getName(), home);
+            }
+            Hommr.getInstance().getLogger().info("Loaded " + homes.size() + " homes.");
+        } catch (SQLException e) {
+            Hommr.getInstance().getLogger().log(java.util.logging.Level.SEVERE, "Failed to load all homes", e);
+        }
+    }
+
+    public static void shutdown() {
+        if (databaseManager != null) {
+            try {
+                List<Home> allHomes = new ArrayList<>();
+                for (PlayerHomes ph : playerHomesCache.values()) {
+                    allHomes.addAll(ph.getHomes().values());
+                }
+                databaseManager.saveAllHomes(allHomes);
+                Hommr.getInstance().getLogger().info("Saved " + allHomes.size() + " homes.");
+            } catch (SQLException e) {
+                Hommr.getInstance().getLogger().log(java.util.logging.Level.SEVERE, "Failed to save all homes", e);
+            }
+            databaseManager.close();
+        }
     }
 
     private static PlayerHomes getOrCreatePlayerHomes(UUID playerId) {
@@ -34,7 +69,7 @@ public class HomeManager {
             return false;
         }
 
-        Home home = Home.fromLocation(homeName, location);
+        Home home = Home.fromLocation(player.getUniqueId(), homeName, location);
 
         // Call the event
         HomeSetEvent event = new HomeSetEvent(player, homeName, home, isUpdate);
@@ -49,18 +84,12 @@ public class HomeManager {
     }
 
     public static Optional<Home> getHome(UUID playerId, String homeName) {
-        PlayerHomes playerHomes = playerHomesCache.get(playerId);
-        if (playerHomes == null) {
-            return Optional.empty();
-        }
+        PlayerHomes playerHomes = getOrCreatePlayerHomes(playerId);
         return playerHomes.getHome(homeName);
     }
 
     public static boolean deleteHome(Player player, String homeName) {
-        PlayerHomes playerHomes = playerHomesCache.get(player.getUniqueId());
-        if (playerHomes == null) {
-            return false;
-        }
+        PlayerHomes playerHomes = getOrCreatePlayerHomes(player.getUniqueId());
 
         Optional<Home> homeOpt = playerHomes.getHome(homeName);
         if (homeOpt.isEmpty()) {
@@ -103,28 +132,19 @@ public class HomeManager {
     }
 
     public static Set<String> getHomeNames(UUID playerId) {
-        PlayerHomes playerHomes = playerHomesCache.get(playerId);
-        if (playerHomes == null) {
-            return Collections.emptySet();
-        }
-        return playerHomes.getHomeNames();
+        return getOrCreatePlayerHomes(playerId).getHomeNames();
     }
 
     public static int getHomeCount(UUID playerId) {
-        PlayerHomes playerHomes = playerHomesCache.get(playerId);
-        return playerHomes != null ? playerHomes.getHomeCount() : 0;
+        return getOrCreatePlayerHomes(playerId).getHomeCount();
     }
 
     public static boolean hasHome(UUID playerId, String homeName) {
-        PlayerHomes playerHomes = playerHomesCache.get(playerId);
-        return playerHomes != null && playerHomes.hasHome(homeName);
+        return getOrCreatePlayerHomes(playerId).hasHome(homeName);
     }
 
-    public static void unloadPlayer(UUID playerId) {
-        playerHomesCache.remove(playerId);
-    }
 
-    public static int getMaxHomes(Player player) {
+    public static int getMaxHomes(@SuppressWarnings("unused") Player player) {
         // TODO: Implement a system to determine max homes based on permissions or other criteria
         return -1; // -1 means unlimited
     }
