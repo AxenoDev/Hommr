@@ -12,5 +12,5 @@ database:
     # Format for MySQL: jdbc:mysql://<host>:<port>/<database>
     # Example: jdbc:mysql://localhost:3306/hommr
     url: jdbc:mysql://localhost:3306/hommr
-    username: root
-    password: password
+    username: ""
+    password: ""
