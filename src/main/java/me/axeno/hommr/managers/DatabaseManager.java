@@ -2,18 +2,18 @@ package me.axeno.hommr.managers;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
-import com.j256.ormlite.jdbc.JdbcConnectionSource;
+import com.j256.ormlite.jdbc.JdbcPooledConnectionSource;
 import com.j256.ormlite.misc.TransactionManager;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import lombok.Getter;
 import me.axeno.hommr.Hommr;
 import me.axeno.hommr.models.Home;
+import org.bukkit.configuration.file.FileConfiguration;
 
-import java.io.File;
+import java.nio.channels.ConnectionPendingException;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 public class DatabaseManager {
 
@@ -25,46 +25,36 @@ public class DatabaseManager {
      * Set up the database connection and DAO for Home entities based on configuration.
      *
      * Initializes the plugin data folder if necessary, creates a JDBC connection source
-     * (MySQL when `database.type` is `"mysql"`, otherwise SQLite using a `homes.db` file),
      * and creates a Dao<Home, Integer> for accessing Home records. Ensures the Home table
      * exists in the database; failures during folder creation, table creation, or overall
      * initialization are logged.
      */
     public void init() {
         try {
-            File dataFolder = Hommr.getInstance().getDataFolder();
-            if (!dataFolder.exists()) {
-                boolean created = dataFolder.mkdirs();
-                if (!created) {
-                    Hommr.getInstance().getLogger().warning("Could not create plugin data folder: " + dataFolder.getAbsolutePath());
-                }
-            }
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            Hommr.getInstance().getSLF4JLogger().error("Database driver not found. Please ensure the MySQL or H2 driver is included in the classpath.");
+            throw new RuntimeException(e);
+        }
 
-            String type = Hommr.getInstance().getConfig().getString("database.type", "sqlite").toLowerCase();
-            String databaseUrl;
-            String username = null;
-            String password = null;
-
-            if (type.equals("mysql")) {
-                databaseUrl = Hommr.getInstance().getConfig().getString("database.connection.url");
-                username = Hommr.getInstance().getConfig().getString("database.connection.username");
-                password = Hommr.getInstance().getConfig().getString("database.connection.password");
-                if (databaseUrl == null || databaseUrl.isEmpty()) {
-                    throw new IllegalArgumentException("MySQL database URL is required but not configured. Please check your config.yml.");
-                }
-                connectionSource = new JdbcConnectionSource(databaseUrl, username, password);
-            } else {
-                databaseUrl = "jdbc:sqlite:" + new File(dataFolder, "homes.db").getAbsolutePath();
-                connectionSource = new JdbcConnectionSource(databaseUrl);
-            }
+        try {
+            FileConfiguration config = Hommr.getInstance().getConfig();
+            String dbUrl = config.getString("database.connection.url");
+            String dbUser = config.getString("database.connection.username");
+            String dbPassword = config.getString("database.connection.password");
+            connectionSource = new JdbcPooledConnectionSource(dbUrl, dbUser, dbPassword);
 
             homeDao = DaoManager.createDao(connectionSource, Home.class);
-
-            TableUtils.createTableIfNotExists(connectionSource, Home.class);
+            if (!homeDao.isTableExists()) {
+                TableUtils.createTableIfNotExists(connectionSource, Home.class);
+            }
 
         } catch (SQLException e) {
             Hommr.getInstance().getLogger().log(java.util.logging.Level.SEVERE, "Failed to initialize database", e);
             throw new RuntimeException("Database initialization failed", e);
+        } catch (ConnectionPendingException e) {
+            Hommr.getInstance().getLogger().log(java.util.logging.Level.SEVERE, "Database connection is pending", e);
+            throw new RuntimeException("Database connection is pending", e);
         }
     }
 
