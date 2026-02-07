@@ -11,7 +11,6 @@ import me.axeno.hommr.Hommr;
 import me.axeno.hommr.models.Home;
 import org.bukkit.configuration.file.FileConfiguration;
 
-import java.nio.channels.ConnectionPendingException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -23,7 +22,7 @@ public class DatabaseManager {
 
     /**
      * Set up the database connection and DAO for Home entities based on configuration.
-     *
+     * <p>
      * Initializes the plugin data folder if necessary, creates a JDBC connection source
      * and creates a Dao<Home, Integer> for accessing Home records. Ensures the Home table
      * exists in the database; failures during folder creation, table creation, or overall
@@ -33,7 +32,7 @@ public class DatabaseManager {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
-            Hommr.getInstance().getSLF4JLogger().error("Database driver not found. Please ensure the MySQL or H2 driver is included in the classpath.");
+            Hommr.getInstance().getSLF4JLogger().error("MySQL database driver not found. Please ensure the MySQL driver is included in the classpath.");
             throw new RuntimeException(e);
         }
 
@@ -42,6 +41,11 @@ public class DatabaseManager {
             String dbUrl = config.getString("database.connection.url");
             String dbUser = config.getString("database.connection.username");
             String dbPassword = config.getString("database.connection.password");
+
+            if (dbUrl == null || dbUrl.isEmpty()) {
+                throw new IllegalStateException("Database URL is not configured. Please set 'database.connection.url' in config.yml");
+            }
+
             connectionSource = new JdbcPooledConnectionSource(dbUrl, dbUser, dbPassword);
 
             homeDao = DaoManager.createDao(connectionSource, Home.class);
@@ -52,16 +56,13 @@ public class DatabaseManager {
         } catch (SQLException e) {
             Hommr.getInstance().getLogger().log(java.util.logging.Level.SEVERE, "Failed to initialize database", e);
             throw new RuntimeException("Database initialization failed", e);
-        } catch (ConnectionPendingException e) {
-            Hommr.getInstance().getLogger().log(java.util.logging.Level.SEVERE, "Database connection is pending", e);
-            throw new RuntimeException("Database connection is pending", e);
         }
     }
 
     /**
      * Closes the underlying database connection source and releases related resources.
-     *
-     * If an error occurs while closing, the exception is caught and a warning is logged. 
+     * <p>
+     * If an error occurs while closing, the exception is caught and a warning is logged.
      */
     public void close() {
         if (connectionSource != null) {
@@ -86,7 +87,7 @@ public class DatabaseManager {
 
     /**
      * Replaces all stored Home records with the provided list.
-     *
+     * <p>
      * Clears the Home table and inserts the given homes in a single batch operation.
      *
      * @param homes the list of Home objects to persist (may be empty)
