@@ -37,6 +37,8 @@ repositories {
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:${minecraft_version}-R0.1-SNAPSHOT")
+    implementation("net.kyori:adventure-api:${adventure_version}")
+    implementation("net.kyori:adventure-text-minimessage:${adventure_version}")
 
     implementation("io.github.revxrsal:lamp.common:${revxrsal_lamp_version}")
     implementation("io.github.revxrsal:lamp.brigadier:${revxrsal_lamp_version}")
