@@ -1,5 +1,6 @@
 package me.axeno.hommr;
 
+import dev.xernas.menulib.MenuLib;
 import lombok.Getter;
 import me.axeno.hommr.api.HommrApi;
 import me.axeno.hommr.api.impl.HommrApiImpl;
@@ -36,6 +37,8 @@ public final class Hommr extends JavaPlugin {
         saveDefaultConfig();
 
         HomeManager.init();
+
+        MenuLib.init(this);
 
         this.api = new HommrApiImpl();
 
