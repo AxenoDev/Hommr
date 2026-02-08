@@ -111,8 +111,6 @@ processResources {
 
 shadowJar {
     relocate("org.bstats", "${project.group}.lib.bstats")
-
-    destinationDirectory.set(file("./server/plugins/"))
 }
 
 modrinth {
