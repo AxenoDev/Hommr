@@ -21,18 +21,20 @@ public class DatabaseManager {
     private Dao<Home, Integer> homeDao;
 
     public void init(String dbUrl, String dbUser, String dbPassword) {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            Hommr.getInstance().getSLF4JLogger().error("MySQL database driver not found. Please ensure the MySQL driver is included in the classpath.");
-            throw new RuntimeException(e);
+        if (dbUrl == null || dbUrl.isEmpty()) {
+            throw new IllegalStateException("Database URL is not configured. Please set 'database.connection.url' in config.yml");
+        }
+
+        if (dbUrl.startsWith("jbdc:mysql:")) {
+            try {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+            } catch (ClassNotFoundException e) {
+                Hommr.getInstance().getSLF4JLogger().error("MySQL database driver not found. Please ensure the MySQL driver is included in the classpath.");
+                throw new RuntimeException(e);
+            }
         }
 
         try {
-            if (dbUrl == null || dbUrl.isEmpty()) {
-                throw new IllegalStateException("Database URL is not configured. Please set 'database.connection.url' in config.yml");
-            }
-
             connectionSource = new JdbcPooledConnectionSource(dbUrl, dbUser, dbPassword);
 
             homeDao = DaoManager.createDao(connectionSource, Home.class);
