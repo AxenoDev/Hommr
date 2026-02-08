@@ -44,7 +44,7 @@ class DatabaseManagerTest {
     void setUp() throws SQLException {
         // Use H2 in-memory database for testing
         databaseManager = new DatabaseManager();
-        databaseManager.init("jdbc:sqlite:database.db", "sa", "");
+        databaseManager.init("jdbc:sqlite::memory:", "", "");
 
         hommrMockedStatic = mockStatic(Hommr.class);
         hommrMockedStatic.when(Hommr::getInstance).thenReturn(mockPlugin);
