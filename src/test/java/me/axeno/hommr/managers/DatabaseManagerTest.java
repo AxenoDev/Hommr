@@ -42,7 +42,7 @@ class DatabaseManagerTest {
 
     @BeforeEach
     void setUp() throws SQLException {
-        // Use H2 in-memory database for testing
+        // Use SQLite in-memory database for testing
         databaseManager = new DatabaseManager();
         databaseManager.init("jdbc:sqlite::memory:", "", "");
 
