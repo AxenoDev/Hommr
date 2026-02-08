@@ -5,6 +5,9 @@ import me.axeno.hommr.api.HommrApi;
 import me.axeno.hommr.api.impl.HommrApiImpl;
 import me.axeno.hommr.commands.HomeCommands;
 import me.axeno.hommr.managers.HomeManager;
+import me.axeno.hommr.models.PlayerHomes;
+import org.bstats.bukkit.Metrics;
+import org.bstats.charts.SingleLineChart;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -36,6 +39,15 @@ public final class Hommr extends JavaPlugin {
         saveDefaultConfig();
 
         HomeManager.init();
+
+        int pluginId = 29415;
+        Metrics metrics = new Metrics(this, pluginId);
+
+        metrics.addCustomChart(new SingleLineChart("total_homes", () -> {
+            return HomeManager.getPlayerHomesCache().values().stream()
+                    .mapToInt(PlayerHomes::getHomeCount)
+                    .sum();
+        }));
 
         this.api = new HommrApiImpl();
 
