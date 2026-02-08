@@ -1,6 +1,5 @@
 package me.axeno.hommr;
 
-import dev.xernas.menulib.MenuLib;
 import lombok.Getter;
 import me.axeno.hommr.api.HommrApi;
 import me.axeno.hommr.api.impl.HommrApiImpl;
@@ -49,10 +48,7 @@ public final class Hommr extends JavaPlugin {
         int pluginId = 29415;
         Metrics metrics = new Metrics(this, pluginId);
 
-        System.out.println("Registering bStats metrics...");
-
         metrics.addCustomChart(new SingleLineChart("total_homes", () -> {
-            System.out.println("Calculating total homes for metrics...");
             return HomeManager.getPlayerHomesCache().values().stream()
                     .mapToInt(PlayerHomes::getHomeCount)
                     .sum();

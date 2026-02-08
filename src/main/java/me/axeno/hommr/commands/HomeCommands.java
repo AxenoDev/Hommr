@@ -31,25 +31,23 @@ public class HomeCommands {
             return;
         }
 
-//        new HomeListMenu(player).open();
+        msg(player, Component.text("Your Homes", NamedTextColor.GOLD, TextDecoration.BOLD));
 
-//        msg(player, Component.text("Your Homes", NamedTextColor.GOLD, TextDecoration.BOLD));
-//
-//        for (String homeName : homes) {
-//            HomeManager.getHome(player.getUniqueId(), homeName).ifPresent(home -> {
-//                String worldInfo = home.getWorld();
-//                player.sendMessage(Component.text()
-//                        .append(Component.text(" • ", NamedTextColor.DARK_GRAY))
-//                        .append(Component.text(homeName, NamedTextColor.YELLOW))
-//                        .append(Component.text(" (" + worldInfo + ")", NamedTextColor.GRAY))
-//                        .build());
-//            });
-//        }
-//
-//        player.sendMessage(Component.text()
-//                .append(Component.text(" Total: ", NamedTextColor.GOLD))
-//                .append(Component.text(homes.size() + " home(s)", NamedTextColor.YELLOW))
-//                .build());
+        for (String homeName : homes) {
+            HomeManager.getHome(player.getUniqueId(), homeName).ifPresent(home -> {
+                String worldInfo = home.getWorld();
+                player.sendMessage(Component.text()
+                        .append(Component.text(" • ", NamedTextColor.DARK_GRAY))
+                        .append(Component.text(homeName, NamedTextColor.YELLOW))
+                        .append(Component.text(" (" + worldInfo + ")", NamedTextColor.GRAY))
+                        .build());
+            });
+        }
+
+        player.sendMessage(Component.text()
+                .append(Component.text(" Total: ", NamedTextColor.GOLD))
+                .append(Component.text(homes.size() + " home(s)", NamedTextColor.YELLOW))
+                .build());
     }
 
     @Command("home <home>")

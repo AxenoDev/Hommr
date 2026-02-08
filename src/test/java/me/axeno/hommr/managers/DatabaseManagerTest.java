@@ -1,11 +1,8 @@
 package me.axeno.hommr.managers;
 
-import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.support.ConnectionSource;
 import me.axeno.hommr.Hommr;
 import me.axeno.hommr.models.Home;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.plugin.PluginDescriptionFile;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,7 +12,6 @@ import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.io.File;
 import java.nio.file.Path;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -45,8 +41,10 @@ class DatabaseManagerTest {
     private MockedStatic<Hommr> hommrMockedStatic;
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws SQLException {
+        // Use SQLite in-memory database for testing
         databaseManager = new DatabaseManager();
+        databaseManager.init("jdbc:sqlite::memory:", "", "");
 
         hommrMockedStatic = mockStatic(Hommr.class);
         hommrMockedStatic.when(Hommr::getInstance).thenReturn(mockPlugin);
@@ -54,7 +52,6 @@ class DatabaseManagerTest {
         lenient().when(mockPlugin.getDataFolder()).thenReturn(tempDir.toFile());
         lenient().when(mockPlugin.getConfig()).thenReturn(mockConfig);
         lenient().when(mockPlugin.getLogger()).thenReturn(mockLogger);
-        lenient().when(mockConfig.getString("database.type", "sqlite")).thenReturn("sqlite");
     }
 
     @AfterEach
@@ -69,17 +66,11 @@ class DatabaseManagerTest {
 
     @Test
     void testInitWithSQLiteCreatesDatabase() {
-        databaseManager.init();
-
         assertNotNull(databaseManager.getHomeDao());
-        File dbFile = new File(tempDir.toFile(), "homes.db");
-        assertTrue(dbFile.exists());
     }
 
     @Test
     void testSaveAndGetAllHomes() throws SQLException {
-        databaseManager.init();
-
         List<Home> homesToSave = new ArrayList<>();
         homesToSave.add(createTestHome(UUID.randomUUID(), "home1"));
         homesToSave.add(createTestHome(UUID.randomUUID(), "home2"));
@@ -94,8 +85,6 @@ class DatabaseManagerTest {
 
     @Test
     void testSaveAllHomesClearsExistingHomes() throws SQLException {
-        databaseManager.init();
-
         List<Home> firstBatch = new ArrayList<>();
         firstBatch.add(createTestHome(UUID.randomUUID(), "home1"));
         firstBatch.add(createTestHome(UUID.randomUUID(), "home2"));
@@ -108,13 +97,11 @@ class DatabaseManagerTest {
         List<Home> retrievedHomes = databaseManager.getAllHomes();
 
         assertEquals(1, retrievedHomes.size());
-        assertEquals("home3", retrievedHomes.get(0).getName());
+        assertEquals("home3", retrievedHomes.getFirst().getName());
     }
 
     @Test
     void testSaveAllHomesPreservesHomeData() throws SQLException {
-        databaseManager.init();
-
         UUID ownerId = UUID.randomUUID();
         Home originalHome = new Home(
             0,
@@ -133,7 +120,7 @@ class DatabaseManagerTest {
         List<Home> retrievedHomes = databaseManager.getAllHomes();
 
         assertEquals(1, retrievedHomes.size());
-        Home retrievedHome = retrievedHomes.get(0);
+        Home retrievedHome = retrievedHomes.getFirst();
         assertEquals(ownerId, retrievedHome.getOwner());
         assertEquals("testHome", retrievedHome.getName());
         assertEquals("world", retrievedHome.getWorld());
@@ -146,8 +133,6 @@ class DatabaseManagerTest {
 
     @Test
     void testCloseDoesNotThrowException() {
-        databaseManager.init();
-
         assertDoesNotThrow(() -> databaseManager.close());
     }
 
