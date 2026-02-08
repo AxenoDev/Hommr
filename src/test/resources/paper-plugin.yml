@@ -1,0 +1,9 @@
+name: Hommr
+version: ${version}
+main: me.axeno.hommr.Hommr
+api-version: ${minecraft_version}
+prefix: Hommr
+load: STARTUP
+authors: [ AxenoDev ]
+description: Easily set, teleport, and manage your homes.
+website: https://axeno.me

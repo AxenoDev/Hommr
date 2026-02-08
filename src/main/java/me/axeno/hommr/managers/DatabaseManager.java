@@ -20,15 +20,7 @@ public class DatabaseManager {
     @Getter
     private Dao<Home, Integer> homeDao;
 
-    /**
-     * Set up the database connection and DAO for Home entities based on configuration.
-     * <p>
-     * Initializes the plugin data folder if necessary, creates a JDBC connection source
-     * and creates a Dao<Home, Integer> for accessing Home records. Ensures the Home table
-     * exists in the database; failures during folder creation, table creation, or overall
-     * initialization are logged.
-     */
-    public void init() {
+    public void init(String dbUrl, String dbUser, String dbPassword) {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
@@ -37,11 +29,6 @@ public class DatabaseManager {
         }
 
         try {
-            FileConfiguration config = Hommr.getInstance().getConfig();
-            String dbUrl = config.getString("database.connection.url");
-            String dbUser = config.getString("database.connection.username");
-            String dbPassword = config.getString("database.connection.password");
-
             if (dbUrl == null || dbUrl.isEmpty()) {
                 throw new IllegalStateException("Database URL is not configured. Please set 'database.connection.url' in config.yml");
             }
@@ -57,6 +44,23 @@ public class DatabaseManager {
             Hommr.getInstance().getLogger().log(java.util.logging.Level.SEVERE, "Failed to initialize database", e);
             throw new RuntimeException("Database initialization failed", e);
         }
+    }
+
+    /**
+     * Set up the database connection and DAO for Home entities based on configuration.
+     * <p>
+     * Initializes the plugin data folder if necessary, creates a JDBC connection source
+     * and creates a Dao<Home, Integer> for accessing Home records. Ensures the Home table
+     * exists in the database; failures during folder creation, table creation, or overall
+     * initialization are logged.
+     */
+    public void init() {
+        FileConfiguration config = Hommr.getInstance().getConfig();
+        String dbUrl = config.getString("database.connection.url");
+        String dbUser = config.getString("database.connection.username", "");
+        String dbPassword = config.getString("database.connection.password", "");
+
+        init(dbUrl, dbUser, dbPassword);
     }
 
     /**
