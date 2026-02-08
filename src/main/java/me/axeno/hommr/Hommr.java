@@ -7,8 +7,6 @@ import me.axeno.hommr.commands.HomeCommands;
 import me.axeno.hommr.managers.HomeManager;
 import me.axeno.hommr.models.PlayerHomes;
 import org.bstats.bukkit.Metrics;
-import org.bstats.charts.DrilldownPie;
-import org.bstats.charts.SimplePie;
 import org.bstats.charts.SingleLineChart;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.ServicePriority;
@@ -17,9 +15,6 @@ import org.slf4j.Logger;
 import revxrsal.commands.Lamp;
 import revxrsal.commands.bukkit.BukkitLamp;
 import revxrsal.commands.bukkit.actor.BukkitCommandActor;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public final class Hommr extends JavaPlugin {
 
@@ -53,8 +48,6 @@ public final class Hommr extends JavaPlugin {
                     .mapToInt(PlayerHomes::getHomeCount)
                     .sum();
         }));
-
-        MenuLib.init(this);
 
         this.api = new HommrApiImpl();
 
