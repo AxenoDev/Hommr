@@ -58,7 +58,6 @@ dependencies {
 
     testImplementation("com.j256.ormlite:ormlite-jdbc:${ormlite_version}")
     testImplementation("org.xerial:sqlite-jdbc:${sqlite_jdbc_version}")
-    testImplementation("com.h2database:h2:2.2.224")
 
     testCompileOnly("org.projectlombok:lombok:${lombok_version}")
     testAnnotationProcessor("org.projectlombok:lombok:${lombok_version}")
