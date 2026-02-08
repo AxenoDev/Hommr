@@ -44,6 +44,8 @@ dependencies {
     implementation("io.github.revxrsal:lamp.brigadier:${revxrsal_lamp_version}")
     implementation("io.github.revxrsal:lamp.bukkit:${revxrsal_lamp_version}")
 
+    implementation("org.bstats:bstats-bukkit:${bstats_version}")
+
     implementation("com.j256.ormlite:ormlite-jdbc:${ormlite_version}")
     implementation("org.xerial:sqlite-jdbc:${sqlite_jdbc_version}")
     implementation("com.mysql:mysql-connector-j:${mysql_connector_version}")
@@ -105,6 +107,12 @@ processResources {
     filesMatching('paper-plugin.yml') {
         expand props
     }
+}
+
+shadowJar {
+    relocate("org.bstats", "${project.group}.lib.bstats")
+
+    destinationDirectory.set(file("./server/plugins/"))
 }
 
 modrinth {

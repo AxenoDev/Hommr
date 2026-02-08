@@ -6,6 +6,11 @@ import me.axeno.hommr.api.HommrApi;
 import me.axeno.hommr.api.impl.HommrApiImpl;
 import me.axeno.hommr.commands.HomeCommands;
 import me.axeno.hommr.managers.HomeManager;
+import me.axeno.hommr.models.PlayerHomes;
+import org.bstats.bukkit.Metrics;
+import org.bstats.charts.DrilldownPie;
+import org.bstats.charts.SimplePie;
+import org.bstats.charts.SingleLineChart;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -13,6 +18,9 @@ import org.slf4j.Logger;
 import revxrsal.commands.Lamp;
 import revxrsal.commands.bukkit.BukkitLamp;
 import revxrsal.commands.bukkit.actor.BukkitCommandActor;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public final class Hommr extends JavaPlugin {
 
@@ -37,6 +45,18 @@ public final class Hommr extends JavaPlugin {
         saveDefaultConfig();
 
         HomeManager.init();
+
+        int pluginId = 29415;
+        Metrics metrics = new Metrics(this, pluginId);
+
+        System.out.println("Registering bStats metrics...");
+
+        metrics.addCustomChart(new SingleLineChart("total_homes", () -> {
+            System.out.println("Calculating total homes for metrics...");
+            return HomeManager.getPlayerHomesCache().values().stream()
+                    .mapToInt(PlayerHomes::getHomeCount)
+                    .sum();
+        }));
 
         MenuLib.init(this);
 

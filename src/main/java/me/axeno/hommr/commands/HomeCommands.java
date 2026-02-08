@@ -1,7 +1,6 @@
 package me.axeno.hommr.commands;
 
 import me.axeno.hommr.managers.HomeManager;
-import me.axeno.hommr.menus.HomeListMenu;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -32,7 +31,7 @@ public class HomeCommands {
             return;
         }
 
-        new HomeListMenu(player).open();
+//        new HomeListMenu(player).open();
 
 //        msg(player, Component.text("Your Homes", NamedTextColor.GOLD, TextDecoration.BOLD));
 //
